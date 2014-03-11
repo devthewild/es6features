@@ -1,45 +1,51 @@
-# ECMAScript 6 <sup>[git.io/es6features](http://git.io/es6features)</sup>
+# ECMAScript 6 <sup>[http://git.io/zAjDkQ](http://git.io/zAjDkQ)</sup>
 
-## Introduction
-ECMAScript 6 is the upcoming version of the ECMAScript standard.  This standard is targeting ratification in December 2014.  ES6 is a significant update to the language, and the first update to the language since ES5 was standardized in 2009.    Implementation of these features in major JavaScript engines is [underway now](http://kangax.github.io/es5-compat-table/es6/).
+## 소개
+ECMAScript 6(이하 ES6)는 ECMAScript 표준의 다음 버전이다.
+2014년 12월 승인을 목표로 하고 있으며 2009년 표준화된 ES5 이후 처음으로 중요한 업데이트이다.
+주요 자바스크립트 엔진들은 현재 이 기능들의 구현이 [진행중](http://kangax.github.io/es5-compat-table/es6/)이다.
 
-See the [draft ES6 standard](https://people.mozilla.org/~jorendorff/es6-draft.html) for full specification of the ECMAScript 6 language.
+ES6의 전체 표준의 [제안](https://people.mozilla.org/~jorendorff/es6-draft.html)을 확인해볼 수 있다.
 
-ES6 includes the following new features:
+ES6는 다음과 같은 새로운 기능들을 포함한다.
+
+
+## ES6 기능
+
 - [arrows](#arrows)
 - [classes](#classes)
 - [enhanced object literals](#enhanced-object-literals)
 - [template strings](#template-strings)
 - [destructuring](#destructuring)
-- [default + rest + spread](#default--rest--spread)
-- [let + const](#let--const)
-- [iterators + for..of](#iterators--forof)
+- [default + rest + spread](#default-rest-spread)
+- [let + const](#let-const)
+- [iterators + for..of](#iterators-forof)
 - [generators](#generators)
 - [comprehensions](#comprehensions)
 - [unicode](#unicode)
 - [modules](#modules)
 - [module loaders](#module-loaders)
-- [map + set + weakmap + weakset](#map--set--weakmap--weakset)
+- [map + set + weakmap + weakset](#map-set-weakmap-weakset)
 - [proxies](#proxies)
 - [symbols](#symbols)
 - [subclassable built-ins](#subclassable-built-ins)
 - [promises](#promises)
-- [math + number + string + object APIs](#math--number--string--object-apis)
+- [math + number + string + object APIs](#math-number-string-object-apis)
 - [binary and octal literals](#binary-and-octal-literals)
 - [reflect api](#reflect-api)
 - [tail calls](#tail-calls)
 
-## ECMAScript 6 Features
-
 ### Arrows
-Arrows are a function shorthand using the `=>` syntax.  They are syntactically similar to the related feature in C#, Java 8 and CoffeeScript.  They support both expression and statement bodies.  Unlike functions, arrows share the same lexical `this` as their surrounding code.
+
+`=>` 문법은 함수의 단축표기이다. C#, Java 8, CoffeeScript와 문법적으로 비슷하다.
+표현식과 괄호식(statement body) 모두 지원한다. 함수와는 다르게 `this`를 바깥깥에서 가져온다.
 
 ```JavaScript
-// Expression bodies
+// 표현식
 var odds = evens.map(v => v + 1);
 var nums = evens.map((v, i) => v + i);
 
-// Statement bodies
+// 괄호식
 nums.forEach(v => {
   if (v % 5 === 0)
     fives.push(v);
@@ -57,7 +63,10 @@ var bob = {
 ```
 
 ### Classes
-ES6 classes are a simple sugar over the prototype-based OO pattern.  Having a single convenient declarative form makes class patterns easier to use, and encourages interoperability.  Classes support prototype-based inheritance, super calls, instance and static methods and constructors.
+
+ES6 클래스는 프로토타입 기반의 객체지향 패턴보다 쓰기 쉽다.
+한줄짜리 코드로 클래스를 더 사용하기 쉽고 상호유용성(interoperability)이 좋아진다.
+클래스는 프로토타입 기반의 상속, 부모 호출, 상속, 그리고 스태틱 메소드, 생성자를 지원한다.
 
 ```JavaScript
 class SkinnedMesh extends THREE.Mesh {
@@ -80,40 +89,42 @@ class SkinnedMesh extends THREE.Mesh {
 ```
 
 ### Enhanced Object Literals
-Object literals are extended to support setting the prototype at construction, shorthand for `foo: foo` assignments, defining methods and making super calls.  Together, these also bring object literals and class declarations closer together, and let object-based design benefit from some of the same conveniences.
+
+객체 표현에 생성 시 사용할 프로토타입 설정, `foo: foo`의 단축표기, 메소드 정의 및 부모 호출 등의 지원이 추가되었다.
+게다가 객체 표현을 클래스 선언에 가깝게 사용할 수 있으며 객체지향 설계의 장점도 가져올 수 있다.
 
 ```JavaScript
 var obj = {
-    // __proto__
-    __proto__: theProtoObj,
-    // Shorthand for ‘handler: handler’
-    handler,
-    // Methods
-    toString() {
-     // Super calls
+   // 프로토타입 설정
+   __proto__: theProtoObj,
+   // `handler: handler`의 단축 표기
+   handler,
+   // 메소드
+   toString() {
+     // 부모 호출
      return "d " + super.toString();
-    },
-    // Computed (dynamic) property names
-    [ 'prop_' + (() => 42)() ]: 42
+   }
 };
 ```
 
 ### Template Strings
-Template strings provide syntactic sugar for constructing strings.  This is similar to string interpolation features in Perl, Python and more.  Optionally, a tag can be added to allow the string construction to be customized, avoiding injection attacks or constructing higher level data structures from string contents.
+
+템플릿 스트링은 문자열 생성을 위한 문법적인 편의이다. 펄, 파이썬 등의 스트링 인터폴레이션 기능과 비슷하다.
+인젝션 공격을 피하거나 문자열 내용을 통해 고차원의 자료구조를 생성하는데 사용할 수 있다.
 
 ```JavaScript
-// Basic literal string creation
+// 기본적인 문자열 생성
 `In JavaScript '\n' is a line-feed.`
 
-// Multiline strings
+// 여러줄의 문자열
 `In JavaScript this is
  not legal.`
 
-// Construct a DOM query
+// DOM 쿼리 생성
 var name = "Bob", time = "today";
 `Hello ${name}, how are you ${time}?`
 
-// Construct an HTTP request prefix is used to interpret the replacements and construction
+// HTTP 요청을 위해 필요한 정보 치환
 GET`http://foo.org/bar?a=${a}&b=${b}
     Content-Type: application/json
     X-Credentials: ${credentials}
@@ -122,44 +133,47 @@ GET`http://foo.org/bar?a=${a}&b=${b}
 ```
 
 ### Destructuring
-Destructuring allows binding using pattern matching, with support for matching arrays and objects.  Destructuring is fail-soft, similar to standard object lookup `foo["bar"]`, producing `undefined` values when not found.
+
+배열이나 객체에서 패턴매칭을 통한 바인드를 지원한다.
+실패 완화(fail-soft)는 객체에서 속성을 찾는 방법 `foo["bar"]`와 비슷해서, 못찾으면 `undefined`가 된다.
 
 ```JavaScript
-// list matching
+  // 배열의 매칭
 var [a, , b] = [1,2,3];
 
-// object matching
-var { op: a, lhs: { op: b }, rhs: c }
-       = getASTNode()
+  // 객체의 매칭
+  var { op: a, lhs: { op: b }, rhs: c }
+         = getASTNode()
 
-// object matching shorthand
-// binds `op`, `lhs` and `rhs` in scope
-var {op, lhs, rhs} = getASTNode()
+  // 객체 매칭의 단축표기
+  // 스코프에서 `op`, `lhs`, 그리고 `rhs`를 바인드
+  var {op, lhs, rhs} = getASTNode()
 
-// Can be used in parameter position
-function g({name: x}) {
-  console.log(x);
-}
-g({name: 5})
+  // 파라미터 위치에서도 쓸 수 있다
+  function g({name: x}) {
+    console.log(x);
+  }
+  g({name: 5})
 
-// Fail-soft destructuring
-var [a] = [];
-a === undefined;
+  // 실패 완화의 분해
+  var [a] = [];
+  a === undefined;
 ```
 
 ### Default + Rest + Spread
-Callee-evaluated default parameter values.  Turn an array into consecutive arguments in a function call.  Bind trailing parameters to an array.  Rest replaces the need for `arguments` and addresses common cases more directly.
+
+함수가 정의될 때 기본값을 설정할 수 있다. 뒤따라오는 인자들을 하나의 배열로 만들어준다. 배열을 직접 `arguments`처럼 사용할 수 있다.
 
 ```JavaScript
 function f(x, y=12) {
-  // y is 12 if not passed (or passed as undefined)
+  // 넘긴 값이 없을 때(혹은 undefined를 넘길 때) y는 12
   return x + y;
 }
 f(3) == 15
 ```
 ```JavaScript
 function f(x, ...y) {
-  // y is an Array
+  // y는 배열
   return x * y.length;
 }
 f(3, "hello", true) == 6
@@ -168,13 +182,14 @@ f(3, "hello", true) == 6
 function f(x, y, z) {
   return x + y + z;
 }
-// Pass each elem of array as argument
+// 배열의 인자 각각을 인자로 넘긴다.
 f(...[1,2,3]) == 6
 ```
 
-### Let + Const
-Block-scoped binding constructs.  `let` is the new `var`.  `const` is single-assignment.  Static restrictions prevent use before assignment.
+## Let + Const
 
+괄호({}) 안의 스코프 안에서 유효한 `let`은 새로운 `var`이다.
+`const`는 선언 뒤에 값이 변경되는걸 막아준다.
 
 ```JavaScript
 function f() {
@@ -193,7 +208,9 @@ function f() {
 ```
 
 ### Iterators + For..Of
-Iterator objects enable custom iteration like CLR IEnumerable or Java Iteratable.  Generalize `for..in` to custom iterator-based iteration with `for..of`.  Don’t require realizing an array, enabling lazy design patterns like LINQ.
+
+iterator는 공통 언어 런타임(CLR; Common Language Runtime)의 IEnumerable이나 Java의 Iteratable과 비슷한 커스텀 이터레이터를 만들어준다.
+`for-in`처럼 커스텀된 이터레이터는 `for-of`를 사용한다. 실제로 배열을 만들 필요 없이, LINQ처럼 나중에 만들 수 있는(lazy) 디자인 패턴이다.
 
 ```JavaScript
 let fibonacci = {
@@ -209,15 +226,14 @@ let fibonacci = {
 }
 
 for (var n of fibonacci) {
-  // truncate the sequence at 1000
+  // 1000번째에서 자르기
   if (n > 1000)
     break;
   print(n);
 }
 ```
-
-Iteration is based on these duck-typed interfaces (using [TypeScript](http://typescriptlang.org) type syntax for exposition only):
-```TypeScript
+이터레이터의 인터페이스를 TypeScript의 문법으로 표현하자면
+```JavaScript
 interface IteratorResult {
   done: boolean;
   value: any;
@@ -229,11 +245,13 @@ interface Iterable {
   [Symbol.iterator](): Iterator
 }
 ```
-
 ### Generators
-Generators simplify iterator-authoring using `function*` and `yield`.  A function declared as function* returns a Generator instance.  Generators are subtypes of iterators which include additional  `next` and `throw`.  These enable values to flow back into the generator, so `yield` is an expression form which returns a value (or throws).
 
-Note: Can also be used to enable ‘await’-like async programming, see also ES7 `await` proposal.
+간단하게 말해서 `function*`와 `yield`로 이터레이터를 짜는 것이다. function*로 함수를 선언하면 제너레이터 인스턴스를 리턴한다.
+제너레이터는 `next`와 `throw`가 추가된 이터레이터의 서브타입이다.
+제너레이터를 통해 값을 던지는데, `yield`는 값을 리턴하는(혹은 던지는) 표현식이다.
+
+노트: 'await'같은 비동기 프로그래밍도 가능하며, ES7에서는 `await`가 제안되었다.
 
 ```JavaScript
 var fibonacci = {
@@ -249,24 +267,23 @@ var fibonacci = {
 }
 
 for (var n of fibonacci) {
-  // truncate the sequence at 1000
+  // 1000번째에서 자르기
   if (n > 1000)
     break;
   print(n);
 }
 ```
 
-The generator interface is (using [TypeScript](http://typescriptlang.org) type syntax for exposition only):
+제너레이터의 인터페이스를 TypeScript의 문법으로 표현하자면
 
-```TypeScript
-interface Generator extends Iterator {
-    next(value?: any): IteratorResult;
-    throw(exception: any);
-}
-```
+    interface Generator extends Iterator {
+        next(value?: any): IteratorResult;
+        throw(exception: any);
+    }
 
 ### Comprehensions
-Array and generator comprehensions provide simple declarative list processing similar as used in many functional programming patterns.
+
+배열과 제너레이터의 comprehension은 많은 함수형 프로그래밍 패턴에서 쓰이는 것과 비슷한 서술식의 리스트 처리를 제공한다.
 
 ```JavaScript
 // Array comprehensions
@@ -283,9 +300,11 @@ var results = (
       { name: c.name, age: c.age }
 )
 ```
+## Unicode
 
-### Unicode
-Non-breaking additions to support full Unicode, including new unicode literal form in strings and new RegExp `u` mode to handle code points, as well as new APIs to process strings at the 21bit code points level.  These additions support building global apps in JavaScript.
+문자열에서의 새로운 유니코드 표현식과 정규식에서 `u` 모드를 포함해 전체 유니코드를 지원한다.
+게다가 21bit도 문자열로 처리할 수 있는 새로운 API도 제공한다.
+이런 추가들은 자바스크립트로 글로벌 앱을 만드는데 도움이 된다.
 
 ```JavaScript
 // same as ES5.1
@@ -307,7 +326,9 @@ for(var c of "𠮷") {
 ```
 
 ### Modules
-Language-level support for modules for component definition.  Codifies patterns from popular JavaScript module loaders (AMD, CommonJS). Runtime behaviour defined by a host-defined default loader.  Implicitly async model – no code executes until requested modules are available and processed.
+
+언어 차원에서 컴포넌트로 선언된 모듈을 지원한다.
+암묵적으로 비동기 모델로 돌아가며, 요청받은 모듈을 실행할 때까지 코드가 실행되지 않는다.
 
 ```JavaScript
 // lib/math.js
@@ -326,8 +347,7 @@ alert("2π = " + math.sum(math.pi, math.pi));
 import {sum, pi} from "lib/math";
 alert("2π = " + sum(pi, pi));
 ```
-
-Some additional features include `export default` and `export *`:
+`export default`와 `export *`같은 기능들도 있다.
 
 ```JavaScript
 // lib/mathplusplus.js
@@ -345,34 +365,37 @@ alert("2π = " + exp(math.pi, math.e));
 ```
 
 ### Module Loaders
-Module loaders support:
-- Dynamic loading
-- State isolation
-- Global namespace isolation
-- Compilation hooks
-- Nested virtualization
 
-The default module loader can be configured, and new loaders can be constructed to evaluated and load code in isolated or constrained contexts.
+모듈 로더는 다음 기능들을 지원한다.
+
+- 동적 로딩
+- 상태 고립
+- 글로벌 네임스페이스 고립
+- 컴파일 후킹
+- 중첩된 가상화
+
+기본 모듈 로더는 설정이 가능하고, 새로운 로더로 실행하는 것도 가능하고 고립되어 로딩되거나 컨텍스트를 제한해서 로딩할 수도 있다.
 
 ```JavaScript
-// Dynamic loading – ‘System’ is default loader
+// 다이나믹 로딩 - `System`이 기본 로더
 System.import('lib/math').then(function(m) {
   alert("2π = " + m.sum(m.pi, m.pi));
 });
 
-// Create execution sandboxes – new Loaders
+// 새 로더 생성 - 샌드박스 실행
 var loader = new Loader({
   global: fixup(window) // replace ‘console.log’
 });
 loader.eval("console.log('hello world!');");
 
-// Directly manipulate module cache
+// 직접 모듈 캐시를 관리
 System.get('jquery');
-System.set('jquery', Module({$: $})); // WARNING: not yet finalized
+System.set('jquery', Module({$: $})); // 경고: 아직 완료되지 않음
 ```
 
 ### Map + Set + WeakMap + WeakSet
-Efficient data structures for common algorithms.  WeakMaps provides leak-free object-key’d side tables.
+
+흔히 쓰는 알고리즘을 위한 효율적인 자료 구조들. WeakMap은 누수없이 객체를 키로 갖는 테이블을 만들 수 있다.
 
 ```JavaScript
 // Sets
@@ -395,43 +418,40 @@ wm.size === undefined
 // Weak Sets
 var ws = new WeakSet();
 ws.add({ data: 42 });
-// Because the added object has no other references, it will not be held in the set
 ```
 
 ### Proxies
-Proxies enable creation of objects with the full range of behaviors available to host objects.  Can be used for interception, object virtualization, logging/profiling, etc.
+
+객체가 할 수 있는 모든 행동을 다루게 해준다. 주입, 객체 가상화, 로그/프로파일링 등에서 사용될 수 있다.
 
 ```JavaScript
-// Proxying a normal object
-var target = {};
-var handler = {
-  get: function (receiver, name) {
+// 보통 객체에 대한 프록시
+var target = {};
+var handler = {
+  get: function (receiver, name) {
     return `Hello, ${name}!`;
-  }
-};
+  }
+};
 
-var p = new Proxy(target, handler);
+var p = new Proxy(target, handler);
 p.world === 'Hello, world!';
 ```
-
 ```JavaScript
-// Proxying a function object
-var target = function () { return 'I am the target'; };
+// 함수 객체에 대한 프록시
+var target = function () { return 'I am the target'; };
 var handler = {
   apply: function (receiver, ...args) {
     return 'I am the proxy';
-  }
-};
+  }
+};
 
 var p = new Proxy(target, handler);
 p() === 'I am the proxy';
 ```
-
-There are traps available for all of the runtime-level meta-operations:
+런타임 단계에서 사용할 수 있는 핸들러들이다
 
 ```JavaScript
-var handler =
-{
+var handler = {
   get:...,
   set:...,
   has:...,
@@ -450,8 +470,8 @@ var handler =
 ```
 
 ### Symbols
-Symbols enable access control for object state.  Symbols allow properties to be keyed by either `string` (as in ES5) or `symbol`.  Symbols are a new primitive type. Optional `name` parameter used in debugging - but is not part of identity.  Symbols are unique (like gensym), but not private since they are exposed via reflection features like `Object.getOwnPropertySymbols`.
 
+심볼은 새로운 프리미티브 타입니다. (ES5에서처럼) `string`이나 `symbol`을 키로 속성을 다룰 수 있다. 심볼은 유니크하지만 `Object.getOwnPropertySymbols` 같은 기능을 통해 노출되기 때문에 private는 아니다.
 
 ```JavaScript
 (function() {
@@ -476,39 +496,43 @@ c["key"] === undefined
 ```
 
 ### Subclassable Built-ins
-In ES6, built-ins like `Array`, `Date` and DOM `Element`s can be subclassed.
 
-Object construction for a function named `Ctor` now uses two-phases (both virtually dispatched):
-- Call `Ctor[@@create]` to allocate the object, installing any special behavior
-- Invoke constructor on new instance to initialize
+ES6에서는 `Array`, `Date`, DOM `Element`같은 내장 객체의 서브클래스를 만들 수 있다.
 
-The known `@@create` symbol is available via `Symbol.create`.  Built-ins now expose their `@@create` explicitly.
+`Ctor`라는 이름의 함수로 객체를 생성하는데 (가상으로 실행되는) 2단계가 있다.
+
+- `Ctor[@@create]`를 불러 객체를 할당하고 특정 행동들을 주입한다
+- 초기화할 새 인스턴스의 생성자를 실행한다.
+
+`@@create`라고 불리는 명령어는 `Symbol.create`를 통해서 이루어진다.
+내장된 속성들은 `@@create`를 통해 명시적으로 드러난다.
 
 ```JavaScript
-// Pseudo-code of Array
+// Array의 의사 코드
 class Array {
     constructor(...args) { /* ... */ }
     static [Symbol.create]() {
-        // Install special [[DefineOwnProperty]]
-        // to magically update 'length'
+        // [[DefineOwnProperty]]를 주입
+        // 'length'에 대한 갖가지 업데이트
     }
 }
 
-// User code of Array subclass
+// Array의 서브클래스에 대한 유저 구현
 class MyArray extends Array {
     constructor(...args) { super(...args); }
 }
 
-// Two-phase 'new':
-// 1) Call @@create to allocate object
-// 2) Invoke constructor on new instance
+// 두 단계의 'new' :
+// 1) @@create를 호출해서 객체를 할당한다.
+// 2) 새로운 인스턴스에 생성자를 실행시킨다.
 var arr = new MyArray();
 arr[1] = 12;
 arr.length == 2
 ```
 
 ### Math + Number + String + Object APIs
-Many new library additions, including core Math libraries, Array conversion helpers, and Object.assign for copying.
+
+객체 복사를 위한 `Object.assign`, 각종 Array 유틸, 코어 Math 라이브러리 등 새로운 라이브러리들이 추가되었다.
 
 ```JavaScript
 Number.EPSILON
@@ -522,8 +546,8 @@ Math.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2) // 2
 "abcde".contains("cd") // true
 "abc".repeat(3) // "abcabcabc"
 
-Array.from(document.querySelectorAll('*')) // Returns a real Array
-Array.of(1, 2, 3) // Similar to new Array(...), but without special one-arg behavior
+Array.from(document.querySelectorAll('*')) // 진짜 Array로 리턴
+Array.of(1, 2, 3) // [1, 2, 3]
 [0, 0, 0].fill(7, 1) // [0,7,7]
 [1,2,3].findIndex(x => x == 2) // 1
 ["a", "b", "c"].entries() // iterator [0, "a"], [1,"b"], [2,"c"]
@@ -534,15 +558,18 @@ Object.assign(Point, { origin: new Point(0,0) })
 ```
 
 ### Binary and Octal Literals
-Two new numeric literal forms are addded for binary (`b`) and octal (`o`).
+
+2진표기`b`와 8진표기`o`
 
 ```JavaScript
 0b111110111 === 503 // true
 0o767 === 503 // true
 ```
 
-### Promises
-Promises are a library for asynchronous programming.  Promises are a first class representation of a value that may be made available in the future.  Promises are used in many existing JavaScript libraries.
+## Promises
+
+프로미스는 비동기 프로그래밍을 위한 라이브러리다. 향후 사용할지 모르는 값을 나타내는데 쓰는 일급 표현이다.
+많은 자바스크립트 라이브러리들이 이미 쓰이고 있다.
 
 ```JavaScript
 function timeout(duration = 0) {
@@ -561,14 +588,16 @@ var p = timeout(1000).then(() => {
 ```
 
 ### Reflect API
-Full reflection API exposing the runtime-level meta-operations on objects.  This is effectively the inverse of the Proxy API, and allows making calls corresponding to the same meta-operations as the proxy traps.  Especially useful for implementing proxies.
+
+런타임 단계에서 객체의 행동들을 드러내는 API이다. 프록시 API의 반대이며 프록시를 구현하는데 특히 유용하다.
 
 ```JavaScript
-// No sample yet
+// 아직 샘플 없음
 ```
 
 ### Tail Calls
-Calls in tail-position are guaranteed to not grow the stack unboundedly.  Makes recursive algorithms safe in the face of unbounded inputs.
+
+함수의 끝에서의 호출(꼬리 재귀)는 스택을 더 만들지 않도록 해준다. 길이를 모르는 입력에 대해 안전하게 재귀호출을 만드는 알고리즘이다.
 
 ```JavaScript
 function factorial(n, acc = 1) {
@@ -577,7 +606,7 @@ function factorial(n, acc = 1) {
     return factorial(n - 1, n * acc);
 }
 
-// Stack overflow in most implementations today,
-// but safe on arbitrary inputs in eS6
+// 요즘 대부분 구현체들에서는 스택 오버플로우
+// 하지만 ES6에서는 어떤 입력에서도 안전하다.
 factorial(100000)
 ```
