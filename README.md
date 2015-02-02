@@ -2,7 +2,7 @@
 
 ## 소개
 ECMAScript 6(이하 ES6)는 ECMAScript 표준의 다음 버전이다.
-2014년 12월 승인을 목표로 하고 있으며 2009년 표준화된 ES5 이후 처음으로 중요한 업데이트이다.
+2015년 6월 승인을 목표로 하고 있으며 2009년 표준화된 ES5 이후 처음으로 중요한 업데이트이다.
 주요 자바스크립트 엔진들은 현재 이 기능들의 구현이 [진행중](http://kangax.github.io/es5-compat-table/es6/)이다.
 
 ES6의 전체 표준의 [제안](https://people.mozilla.org/~jorendorff/es6-draft.html)을 확인해볼 수 있다.
@@ -21,7 +21,6 @@ ES6는 다음과 같은 새로운 기능들을 포함한다.
 - [let + const](#let-const)
 - [iterators + for..of](#iterators-forof)
 - [generators](#generators)
-- [comprehensions](#comprehensions)
 - [unicode](#unicode)
 - [modules](#modules)
 - [module loaders](#module-loaders)
@@ -38,7 +37,7 @@ ES6는 다음과 같은 새로운 기능들을 포함한다.
 ### Arrows
 
 `=>` 문법은 함수의 단축표기이다. C#, Java 8, CoffeeScript와 문법적으로 비슷하다.
-표현식과 괄호식(statement body) 모두 지원한다. 함수와는 다르게 `this`를 바깥깥에서 가져온다.
+표현식과 괄호식(statement body) 모두 지원한다. 함수와는 다르게 `this`를 바깥에서 가져온다.
 
 ```JavaScript
 // 표현식
@@ -139,7 +138,7 @@ GET`http://foo.org/bar?a=${a}&b=${b}
 
 ```JavaScript
   // 배열의 매칭
-var [a, , b] = [1,2,3];
+  var [a, , b] = [1,2,3];
 
   // 객체의 매칭
   var { op: a, lhs: { op: b }, rhs: c }
@@ -158,6 +157,10 @@ var [a, , b] = [1,2,3];
   // 실패 완화의 분해
   var [a] = [];
   a === undefined;
+
+  // 기본값을 사용한 실패 완화의 분해
+  var [a = 1] = [];
+  a === 1;
 ```
 
 ### Default + Rest + Spread
@@ -209,7 +212,7 @@ function f() {
 
 ### Iterators + For..Of
 
-iterator는 공통 언어 런타임(CLR; Common Language Runtime)의 IEnumerable이나 Java의 Iteratable과 비슷한 커스텀 이터레이터를 만들어준다.
+iterator는 공통 언어 런타임(CLR; Common Language Runtime)의 IEnumerable이나 Java의 Iterable과 비슷한 커스텀 이터레이터를 만들어준다.
 `for-in`처럼 커스텀된 이터레이터는 `for-of`를 사용한다. 실제로 배열을 만들 필요 없이, LINQ처럼 나중에 만들 수 있는(lazy) 디자인 패턴이다.
 
 ```JavaScript
@@ -281,25 +284,6 @@ for (var n of fibonacci) {
         throw(exception: any);
     }
 
-### Comprehensions
-
-배열과 제너레이터의 comprehension은 많은 함수형 프로그래밍 패턴에서 쓰이는 것과 비슷한 서술식의 리스트 처리를 제공한다.
-
-```JavaScript
-// Array comprehensions
-var results = [
-  for(c of customers)
-    if (c.city == "Seattle")
-      { name: c.name, age: c.age }
-]
-
-// Generator comprehensions
-var results = (
-  for(c of customers)
-    if (c.city == "Seattle")
-      { name: c.name, age: c.age }
-)
-```
 ## Unicode
 
 문자열에서의 새로운 유니코드 표현식과 정규식에서 `u` 모드를 포함해 전체 유니코드를 지원한다.
@@ -339,7 +323,7 @@ export var pi = 3.141593;
 ```
 ```JavaScript
 // app.js
-module math from "lib/math";
+import * as math from "lib/math";
 alert("2π = " + math.sum(math.pi, math.pi));
 ```
 ```JavaScript
@@ -359,9 +343,8 @@ export default function(x) {
 ```
 ```JavaScript
 // app.js
-module math from "lib/mathplusplus";
-import exp from "lib/mathplusplus";
-alert("2π = " + exp(math.pi, math.e));
+import exp, {pi, e} from "lib/mathplusplus";
+alert("2π = " + exp(pi, e));
 ```
 
 ### Module Loaders
