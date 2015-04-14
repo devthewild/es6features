@@ -1,8 +1,8 @@
 # ECMAScript 6 <sup>[http://git.io/zAjDkQ](http://git.io/zAjDkQ)</sup>
 
 ## 소개
-ECMAScript 6(이하 ES6)는 ECMAScript 표준의 다음 버전이다.
-2015년 6월 승인을 목표로 하고 있으며 2009년 표준화된 ES5 이후 처음으로 중요한 업데이트이다.
+ECMAScript 6(이하 ES6)또는 ECMAScript 2015는 ECMAScript 표준의 다음 버전이다.
+2015년 6월 승인을 목표로 하고 있다. ES6은 2009년 표준화된 ES5 이후 언어에서 처음으로 중요한 업데이트이다.
 주요 자바스크립트 엔진들은 현재 이 기능들의 구현이 [진행중](http://kangax.github.io/es5-compat-table/es6/)이다.
 
 ES6의 전체 표준의 [제안](https://people.mozilla.org/~jorendorff/es6-draft.html)을 확인해볼 수 있다.
@@ -29,7 +29,7 @@ ES6는 다음과 같은 새로운 기능들을 포함한다.
 - [symbols](#symbols)
 - [subclassable built-ins](#subclassable-built-ins)
 - [promises](#promises)
-- [math + number + string + object APIs](#math-number-string-object-apis)
+- [math + number + string + array + object APIs](#math--number--string--array--object-apis)
 - [binary and octal literals](#binary-and-octal-literals)
 - [reflect api](#reflect-api)
 - [tail calls](#tail-calls)
@@ -43,6 +43,7 @@ ES6는 다음과 같은 새로운 기능들을 포함한다.
 // 표현식
 var odds = evens.map(v => v + 1);
 var nums = evens.map((v, i) => v + i);
+var pairs = evens.map(v => ({even: v, odd: v + 1}));
 
 // 괄호식
 nums.forEach(v => {
@@ -81,6 +82,12 @@ class SkinnedMesh extends THREE.Mesh {
     //...
     super.update();
   }
+  get boneCount() {
+    return this.bones.length;
+  }
+  set matrixType(matrixType) {
+    this.idMatrix = SkinnedMesh[matrixType]();
+  }
   static defaultMatrix() {
     return new THREE.Matrix4();
   }
@@ -89,7 +96,7 @@ class SkinnedMesh extends THREE.Mesh {
 
 ### Enhanced Object Literals
 
-객체 표현에 생성 시 사용할 프로토타입 설정, `foo: foo`의 단축표기, 메소드 정의 및 부모 호출 등의 지원이 추가되었다.
+객체 표현에 생성 시 사용할 프로토타입 설정, `foo: foo`의 단축표기, 메소드 정의 및 부모 호출, 표현식과 함께 계산된 프로퍼티 이름 등의 지원이 추가되었다.
 게다가 객체 표현을 클래스 선언에 가깝게 사용할 수 있으며 객체지향 설계의 장점도 가져올 수 있다.
 
 ```JavaScript
@@ -119,7 +126,7 @@ var obj = {
 `In JavaScript this is
  not legal.`
 
-// DOM 쿼리 생성
+// 문자열 보간
 var name = "Bob", time = "today";
 `Hello ${name}, how are you ${time}?`
 
@@ -232,7 +239,7 @@ for (var n of fibonacci) {
   // 1000번째에서 자르기
   if (n > 1000)
     break;
-  print(n);
+  console.log(n);
 }
 ```
 이터레이터의 인터페이스를 TypeScript의 문법으로 표현하자면
@@ -273,7 +280,7 @@ for (var n of fibonacci) {
   // 1000번째에서 자르기
   if (n > 1000)
     break;
-  print(n);
+  console.log(n);
 }
 ```
 
@@ -338,13 +345,13 @@ alert("2π = " + sum(pi, pi));
 export * from "lib/math";
 export var e = 2.71828182846;
 export default function(x) {
-    return Math.exp(x);
+    return Math.log(x);
 }
 ```
 ```JavaScript
 // app.js
-import exp, {pi, e} from "lib/mathplusplus";
-alert("2π = " + exp(pi, e));
+import ln, {pi, e} from "lib/mathplusplus";
+alert("2π = " + ln(e)*pi*2);
 ```
 
 ### Module Loaders
@@ -457,7 +464,7 @@ var handler = {
 심볼은 새로운 프리미티브 타입니다. (ES5에서처럼) `string`이나 `symbol`을 키로 속성을 다룰 수 있다. 심볼은 유니크하지만 `Object.getOwnPropertySymbols` 같은 기능을 통해 노출되기 때문에 private는 아니다.
 
 ```JavaScript
-(function() {
+var MyClass = (function() {
 
   // module scoped symbol
   var key = Symbol("key");
@@ -472,6 +479,7 @@ var handler = {
     }
   };
 
+  return MyClass;
 })();
 
 var c = new MyClass("hello")
@@ -513,9 +521,9 @@ arr[1] = 12;
 arr.length == 2
 ```
 
-### Math + Number + String + Object APIs
+### Math + Number + String + Array + Object APIs
 
-객체 복사를 위한 `Object.assign`, 각종 Array 유틸, 코어 Math 라이브러리 등 새로운 라이브러리들이 추가되었다.
+코어 Math 라이브러리, 각종 Array 유틸, 문자열 유틸, 객체 복사를 위한 `Object.assign` 등 새로운 라이브러리들이 추가되었다.
 
 ```JavaScript
 Number.EPSILON
@@ -526,13 +534,15 @@ Math.acosh(3) // 1.762747174039086
 Math.hypot(3, 4) // 5
 Math.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2) // 2
 
-"abcde".contains("cd") // true
+"abcde".includes("cd") // true
 "abc".repeat(3) // "abcabcabc"
 
 Array.from(document.querySelectorAll('*')) // 진짜 Array로 리턴
 Array.of(1, 2, 3) // [1, 2, 3]
 [0, 0, 0].fill(7, 1) // [0,7,7]
-[1,2,3].findIndex(x => x == 2) // 1
+[1, 2, 3].find(x => x == 3) // 3
+[1, 2, 3].findIndex(x => x == 2) // 1
+[1, 2, 3, 4, 5].copyWithin(3, 0) // [1, 2, 3, 1, 2]
 ["a", "b", "c"].entries() // iterator [0, "a"], [1,"b"], [2,"c"]
 ["a", "b", "c"].keys() // iterator 0, 1, 2
 ["a", "b", "c"].values() // iterator "a", "b", "c"
